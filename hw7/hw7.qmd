@@ -10,11 +10,11 @@ format:
         code-copy: true
 ---
 
-(include a brief description of what is in this document)
+include a brief description of what is in this document
 
-(Please clean up any comments that I included.  This is a scaffold document.)
+Please clean up any comments that I included.  This is a scaffold document.
 
-GITHUB URL:  <your URL goes here!>
+GITHUB URL:  <https://github.com/cmsc-vcu/cmsc508-fa2023-hw7-samuellee108>
 
 ```{python}
 #| eval: true
@@ -92,11 +92,11 @@ except Exception as e:
 
 ## Overview and description
 
-(briefly describe the project and the database)
+briefly describe the project and the database
 
 ## Crows-foot diagram
 
-(add a description of the diagram and what the reader is seeing.)
+add a description of the diagram and what the reader is seeing.
 
 ```{mermaid}
 %%| echo: false
@@ -110,18 +110,19 @@ erDiagram
     }
     DELIVERY-ADDRESS {
         int id
+        int test
     }
 ```
 
 ## Examples of data in the database
 
-For the people, skills, and roles tables, provide a description of each table and it's contents. Then provide a listing of the entire table.
+For the people, skills, and roles tables, provide a description of each table and it's contents. Then provide a listing of the entire table. 
 
 ### People table
 
-The *people* table contains elements that describe ... 
+The *people* table contains elements that describe ...  l
 
-Below is a list of data in the *people* table.
+Below is a list of data in the *people* table.l
 
 ```{python}
 #| echo: false
@@ -142,9 +143,9 @@ df
 
 ### Skills table
 
-The *skills* table contains elements that describe ... 
+The *skills* table contains elements that describe ...l 
 
-Below is a list of data in the *skills* table.
+Below is a list of data in the *skills* table.l
 
 ```{python}
 #| echo: false
@@ -155,9 +156,9 @@ Below is a list of data in the *skills* table.
 
 ### Roles table
 
-The *roles* table contains elements that describe ... 
+The *roles* table contains elements that describe ... l
 
-Below is a list of data in the *roles* table.
+Below is a list of data in the *roles* table.l
 
 ```{python}
 #| echo: false
@@ -173,7 +174,7 @@ Let's explore the database!
 
 # List skill names, tags, and descriptions ordered by name
 
-(here a sample query)
+here a sample query
 
 ```{python}
 sql = f"""
@@ -182,7 +183,7 @@ select * from people
 ```
 
 
-(and here is a sample result from the query)
+and here is a sample result from the query
 
 ```{python}
 #| echo: false
@@ -225,5 +226,5 @@ df
 
 ## Reflection
 
-(Write a paragraph expressing your thoughts, feelings, and insights about your experience with this assignment.  Pause and breath before writing - I'm trying to encourage critical thinking and self-awareness while allowing you to explore the connections between theory and practice. And yes, delete this paragraph.)
+Write a paragraph expressing your thoughts, feelings, and insights about your experience with this assignment.  Pause and breath before writing - I'm trying to encourage critical thinking and self-awareness while allowing you to explore the connections between theory and practice. And yes, delete this paragraph.
 
