@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Samuel Lyons">
-<meta name="dcterms.date" content="2023-11-11">
+<meta name="dcterms.date" content="2023-11-14">
 
 <title>Homework 7 - Creating a resume database</title>
 <style>
@@ -3363,7 +3363,7 @@ z-index: 1000;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 11, 2023</p>
+      <p class="date">November 14, 2023</p>
     </div>
   </div>
   
@@ -3373,30 +3373,67 @@ z-index: 1000;
 
 </header>
 
-<p>(include a brief description of what is in this document)</p>
-<p>(Please clean up any comments that I included. This is a scaffold document.)</p>
-<p>GITHUB URL: &lt;your URL goes here!&gt;</p>
+<p>This is homework 7, it gives me practice building a database that represents a company-wide resume of collective skils and certifications. By following the instructions and taking my knowelede from the lecture I will write queries after I build the database to answer those questions provided.</p>
+<p>GITHUB URL: <a href="https://github.com/cmsc-vcu/cmsc508-fa2023-hw7-samuellee108" class="uri">https://github.com/cmsc-vcu/cmsc508-fa2023-hw7-samuellee108</a></p>
 <section id="overview-and-description" class="level2">
 <h2 class="anchored" data-anchor-id="overview-and-description">Overview and description</h2>
-<p>(briefly describe the project and the database)</p>
+<p>The project represents my company-wide resume capturing the collective skills and certifications of all the people in my company. The database will capture skills, employees and their roles within my company. This will help my sensei find employees with specific skills, list the skills of any employee and help find gaps in the skill sets of employees in specific roles. This database contains the following schema</p>
+<p>skills( id,name, description, tag, url, time_commitment) people( id,first_name, last_name, email, linkedin_url, headshot_url, discord_handle, brief_bio, date_joined) peopleskills( id, skills_id, people_id, date_acquired ) roles( id, name, sort_priority) people_roles( id, people_id, role_id, date_role_acquired )</p>
 </section>
 <section id="crows-foot-diagram" class="level2">
 <h2 class="anchored" data-anchor-id="crows-foot-diagram">Crows-foot diagram</h2>
-<p>(add a description of the diagram and what the reader is seeing.)</p>
+<p>This is a Crow’s Foot Diagram of my database</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <div>
 <pre class="mermaid mermaid-js">erDiagram
-    CUSTOMER ||--o{ ORDER : places
-    CUSTOMER }|..|{ DELIVERY-ADDRESS : uses
-    CUSTOMER{
-        int id
-        string first_name
-        string last_name
+    peopleroles }|--|| people : x
+    peopleroles }|--|| roles : x
+    peopleskills }|--|| skills : x
+    peopleskills }|--|| people : x
+    
+    
+    
+    people{
+        primary_key id
+        varchar first_name
+        varchar last_name
+        varchar email
+        varchar linkedin_url
+        varchar headshot_url
+        varchar discord_handle
+        varchar brief_bio
+        int date_joined
     }
-    DELIVERY-ADDRESS {
-        int id
+    roles {
+        primary_key id
+        varchar name
+        int sort_priority
+    }
+
+    skills {
+        primary_key id
+        varchar name
+        varchar description
+        varchar tag
+        varchar url 
+        varchar time_commitment
+
+    }
+
+    peopleroles {
+        primary_key id
+        foreign_key people_id
+        foreign_key role_id
+        int date_assigned
+    }
+
+    peopleskills {
+        primary_key id
+        foreign_key skils_id
+        foreign_key people_id
+        int date_acquired
     }
 </pre>
 </div>
@@ -3406,11 +3443,10 @@ z-index: 1000;
 </section>
 <section id="examples-of-data-in-the-database" class="level2">
 <h2 class="anchored" data-anchor-id="examples-of-data-in-the-database">Examples of data in the database</h2>
-<p>For the people, skills, and roles tables, provide a description of each table and it’s contents. Then provide a listing of the entire table.</p>
 <section id="people-table" class="level3">
 <h3 class="anchored" data-anchor-id="people-table">People table</h3>
-<p>The <em>people</em> table contains elements that describe …</p>
-<p>Below is a list of data in the <em>people</em> table.</p>
+<p>The <em>people</em> table contains the Persons ID, First name, last name, email, linkedin url, headshot url, and discord handle.</p>
+<p>Below is a list of data in the <em>people</em> table:</p>
 <div class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
@@ -3561,13 +3597,166 @@ z-index: 1000;
 </section>
 <section id="skills-table" class="level3">
 <h3 class="anchored" data-anchor-id="skills-table">Skills table</h3>
-<p>The <em>skills</em> table contains elements that describe …</p>
-<p>Below is a list of data in the <em>skills</em> table.</p>
+<p>The <em>skills</em> table contains Skill’s ID, name, description, tag, url, and time commitment</p>
+<p>Below is a list of data in the <em>skills</em> table:</p>
+<div class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">description</th>
+<th data-quarto-table-cell-role="th">tag</th>
+<th data-quarto-table-cell-role="th">url</th>
+<th data-quarto-table-cell-role="th">time_commitment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1</td>
+<td>Digital Advertising</td>
+<td>Create and manage online advertising campaigns</td>
+<td>Skill 1</td>
+<td>https://example.com/digital-advertising</td>
+<td>25</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2</td>
+<td>Business Analytics</td>
+<td>Analyze business data to drive strategic decis...</td>
+<td>Skill 2</td>
+<td>https://example.com/business-analytics</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>3</td>
+<td>Cybersecurity</td>
+<td>Protect computer systems and networks from sec...</td>
+<td>Skill 3</td>
+<td>https://example.com/cybersecurity</td>
+<td>35</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>4</td>
+<td>Financial Planning</td>
+<td>Help individuals and businesses plan their fin...</td>
+<td>Skill 4</td>
+<td>https://example.com/financial-planning</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>5</td>
+<td>Content Marketing</td>
+<td>Develop and execute content strategies to driv...</td>
+<td>Skill 5</td>
+<td>https://example.com/content-marketing</td>
+<td>25</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>6</td>
+<td>Project Risk Management</td>
+<td>Identify and mitigate risks in project execution</td>
+<td>Skill 6</td>
+<td>https://example.com/project-risk-management</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>7</td>
+<td>User Experience Research</td>
+<td>Conduct user research to improve product usabi...</td>
+<td>Skill 7</td>
+<td>https://example.com/user-experience-research</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>8</td>
+<td>Strategic Negotiation</td>
+<td>Negotiate effectively to achieve favorable out...</td>
+<td>Skill 8</td>
+<td>https://example.com/strategic-negotiation</td>
+<td>15</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 <section id="roles-table" class="level3">
 <h3 class="anchored" data-anchor-id="roles-table">Roles table</h3>
-<p>The <em>roles</em> table contains elements that describe …</p>
-<p>Below is a list of data in the <em>roles</em> table.</p>
+<p>The <em>roles</em> table contains Role’s ID, name, and sorting priority</p>
+<p>Below is a list of data in the <em>roles</em> table.l</p>
+<div class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">sort_priority</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1</td>
+<td>Designer</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2</td>
+<td>Developer</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>3</td>
+<td>Recruit</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>4</td>
+<td>Team Lead</td>
+<td>40</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>5</td>
+<td>Boss</td>
+<td>50</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>6</td>
+<td>Mentor</td>
+<td>60</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="sample-queries" class="level2">
@@ -3576,13 +3765,20 @@ z-index: 1000;
 </section>
 <section id="list-skill-names-tags-and-descriptions-ordered-by-name" class="level1">
 <h1>List skill names, tags, and descriptions ordered by name</h1>
-<p>(here a sample query)</p>
+<p>here a query that answers the statement above:</p>
 <div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sql <span class="op">=</span> <span class="ss">f&quot;&quot;&quot;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ss">select * from people</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ss">&quot;&quot;&quot;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ss">SELECT </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ss">    name, </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ss">    tag, </span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ss">    description </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ss">FROM </span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ss">    skills</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">ORDER BY</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">    name;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">&quot;&quot;&quot;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>(and here is a sample result from the query)</p>
+<p>and here is a sample result from the query</p>
 <div class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
@@ -3592,137 +3788,59 @@ z-index: 1000;
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">id</th>
-<th data-quarto-table-cell-role="th">first_name</th>
-<th data-quarto-table-cell-role="th">last_name</th>
-<th data-quarto-table-cell-role="th">email</th>
-<th data-quarto-table-cell-role="th">linkedin_url</th>
-<th data-quarto-table-cell-role="th">headshot_url</th>
-<th data-quarto-table-cell-role="th">discord_handle</th>
-<th data-quarto-table-cell-role="th">brief_bio</th>
-<th data-quarto-table-cell-role="th">date_joined</th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">tag</th>
+<th data-quarto-table-cell-role="th">description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>1</td>
-<td>John</td>
-<td>Person 1</td>
-<td>john.doe@example.com</td>
-<td>https://www.linkedin.com/in/johndoe</td>
-<td>https://example.com/johndoe.jpg</td>
-<td>johndoe#1234</td>
-<td>Experienced software engineer with a passion f...</td>
-<td>20230101</td>
+<td>Business Analytics</td>
+<td>Skill 2</td>
+<td>Analyze business data to drive strategic decis...</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
-<td>2</td>
-<td>Jane</td>
-<td>Person 2</td>
-<td>jane.smith@example.com</td>
-<td>https://www.linkedin.com/in/janesmith</td>
-<td>https://example.com/janesmith.jpg</td>
-<td>janesmith#5678</td>
-<td>Marketing professional with a proven track rec...</td>
-<td>20230102</td>
+<td>Content Marketing</td>
+<td>Skill 5</td>
+<td>Develop and execute content strategies to driv...</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
-<td>3</td>
-<td>Michael</td>
-<td>Person 3</td>
-<td>michael.johnson@example.com</td>
-<td>https://www.linkedin.com/in/michaeljohnson</td>
-<td>https://example.com/michaeljohnson.jpg</td>
-<td>mjohnson#9012</td>
-<td>Seasoned project manager skilled in leading cr...</td>
-<td>20230103</td>
+<td>Cybersecurity</td>
+<td>Skill 3</td>
+<td>Protect computer systems and networks from sec...</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>4</td>
-<td>Emily</td>
-<td>Person 4</td>
-<td>emily.brown@example.com</td>
-<td>https://www.linkedin.com/in/emilybrown</td>
-<td>https://example.com/emilybrown.jpg</td>
-<td>ebrown#3456</td>
-<td>Creative graphic designer with expertise in br...</td>
-<td>20230104</td>
+<td>Digital Advertising</td>
+<td>Skill 1</td>
+<td>Create and manage online advertising campaigns</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>5</td>
-<td>David</td>
-<td>Person 5</td>
-<td>david.wilson@example.com</td>
-<td>https://www.linkedin.com/in/davidwilson</td>
-<td>https://example.com/davidwilson.jpg</td>
-<td>dwilson#7890</td>
-<td>Financial analyst with a strong background in ...</td>
-<td>20230105</td>
+<td>Financial Planning</td>
+<td>Skill 4</td>
+<td>Help individuals and businesses plan their fin...</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
-<td>6</td>
-<td>Sarah</td>
-<td>Person 6</td>
-<td>sarah.taylor@example.com</td>
-<td>https://www.linkedin.com/in/sarahtaylor</td>
-<td>https://example.com/sarahtaylor.jpg</td>
-<td>staylor#2345</td>
-<td>Experienced HR professional specializing in ta...</td>
-<td>20230106</td>
+<td>Project Risk Management</td>
+<td>Skill 6</td>
+<td>Identify and mitigate risks in project execution</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">6</td>
-<td>7</td>
-<td>William</td>
-<td>Person 7</td>
-<td>williamwilson@example.com</td>
-<td>https://www.linkedin.com/in/williamwilson</td>
-<td>https://example.com/williamwilson_headshot.jpg</td>
-<td>williamwilson#7890</td>
-<td>Experienced content writer specializing in SEO...</td>
-<td>20230107</td>
+<td>Strategic Negotiation</td>
+<td>Skill 8</td>
+<td>Negotiate effectively to achieve favorable out...</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">7</td>
-<td>8</td>
-<td>Olivia</td>
-<td>Person 8</td>
-<td>oliviagarcia@example.com</td>
-<td>https://www.linkedin.com/in/oliviagarcia</td>
-<td>https://example.com/oliviagarcia_headshot.jpg</td>
-<td>oliviagarcia#2345</td>
-<td>Skilled project manager with expertise in risk...</td>
-<td>20230108</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">8</td>
-<td>9</td>
-<td>James</td>
-<td>Person 9</td>
-<td>jamesmartinez@example.com</td>
-<td>https://www.linkedin.com/in/jamesmartinez</td>
-<td>https://example.com/jamesmartinez_headshot.jpg</td>
-<td>jamesmartinez#6789</td>
-<td>User experience researcher passionate about cr...</td>
-<td>20230109</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">9</td>
-<td>10</td>
-<td>Ava</td>
-<td>Person 10</td>
-<td>avalopez@example.com</td>
-<td>https://www.linkedin.com/in/avalopez</td>
-<td>https://example.com/avalopez_headshot.jpg</td>
-<td>avalopez#0123</td>
-<td>Skilled negotiator with expertise in strategic...</td>
-<td>20230110</td>
+<td>User Experience Research</td>
+<td>Skill 7</td>
+<td>Conduct user research to improve product usabi...</td>
 </tr>
 </tbody>
 </table>
@@ -3732,31 +3850,344 @@ z-index: 1000;
 </div>
 <section id="list-people-names-and-email-addresses-ordered-by-last_name" class="level3">
 <h3 class="anchored" data-anchor-id="list-people-names-and-email-addresses-ordered-by-last_name">List people names and email addresses ordered by last_name</h3>
+<div class="cell" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">first_name</th>
+<th data-quarto-table-cell-role="th">last_name</th>
+<th data-quarto-table-cell-role="th">email</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>John</td>
+<td>Person 1</td>
+<td>john.doe@example.com</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Jane</td>
+<td>Person 2</td>
+<td>jane.smith@example.com</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Michael</td>
+<td>Person 3</td>
+<td>michael.johnson@example.com</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Emily</td>
+<td>Person 4</td>
+<td>emily.brown@example.com</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>David</td>
+<td>Person 5</td>
+<td>david.wilson@example.com</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>Sarah</td>
+<td>Person 6</td>
+<td>sarah.taylor@example.com</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>William</td>
+<td>Person 7</td>
+<td>williamwilson@example.com</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>Olivia</td>
+<td>Person 8</td>
+<td>oliviagarcia@example.com</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>James</td>
+<td>Person 9</td>
+<td>jamesmartinez@example.com</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>Ava</td>
+<td>Person 10</td>
+<td>avalopez@example.com</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 <section id="list-skill-names-of-person-1" class="level3">
 <h3 class="anchored" data-anchor-id="list-skill-names-of-person-1">List skill names of Person 1</h3>
+<div class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Digital Advertising</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Cybersecurity</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Content Marketing</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 <section id="list-people-names-with-skill-6" class="level3">
 <h3 class="anchored" data-anchor-id="list-people-names-with-skill-6">List people names with Skill 6</h3>
+<div class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">first_name</th>
+<th data-quarto-table-cell-role="th">last_name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>David</td>
+<td>Person 5</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>William</td>
+<td>Person 7</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Olivia</td>
+<td>Person 8</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>James</td>
+<td>Person 9</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 <section id="list-people-with-a-developer-role" class="level3">
 <h3 class="anchored" data-anchor-id="list-people-with-a-developer-role">List people with a DEVELOPER role</h3>
+<div class="cell" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">first_name</th>
+<th data-quarto-table-cell-role="th">last_name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>John</td>
+<td>Person 1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Michael</td>
+<td>Person 3</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Sarah</td>
+<td>Person 6</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>James</td>
+<td>Person 9</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Ava</td>
+<td>Person 10</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 <section id="list-names-and-email-addresses-of-people-without-skills" class="level3">
 <h3 class="anchored" data-anchor-id="list-names-and-email-addresses-of-people-without-skills">List names and email addresses of people without skills</h3>
+<div class="cell" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">first_name</th>
+<th data-quarto-table-cell-role="th">last_name</th>
+<th data-quarto-table-cell-role="th">email</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Emily</td>
+<td>Person 4</td>
+<td>emily.brown@example.com</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 <section id="list-names-and-tags-of-unused-skills" class="level3">
 <h3 class="anchored" data-anchor-id="list-names-and-tags-of-unused-skills">List names and tags of unused skills</h3>
+<div class="cell" data-execution_count="15">
+<div class="cell-output cell-output-display" data-execution_count="15">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">tag</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>User Experience Research</td>
+<td>Skill 7</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Strategic Negotiation</td>
+<td>Skill 8</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 <section id="list-people-names-and-skill-names-with-the-boss-role" class="level3">
 <h3 class="anchored" data-anchor-id="list-people-names-and-skill-names-with-the-boss-role">List people names and skill names with the BOSS role</h3>
+<div class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="16">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">first_name</th>
+<th data-quarto-table-cell-role="th">last_name</th>
+<th data-quarto-table-cell-role="th">name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Jane</td>
+<td>Person 2</td>
+<td>Cybersecurity</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Jane</td>
+<td>Person 2</td>
+<td>Financial Planning</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Jane</td>
+<td>Person 2</td>
+<td>Content Marketing</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 <section id="list-ids-and-names-of-unused-roles" class="level3">
 <h3 class="anchored" data-anchor-id="list-ids-and-names-of-unused-roles">List ids and names of unused roles</h3>
+<div class="cell" data-execution_count="17">
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">name</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 </section>
 <section id="reflection" class="level2">
 <h2 class="anchored" data-anchor-id="reflection">Reflection</h2>
-<p>(Write a paragraph expressing your thoughts, feelings, and insights about your experience with this assignment. Pause and breath before writing - I’m trying to encourage critical thinking and self-awareness while allowing you to explore the connections between theory and practice. And yes, delete this paragraph.)</p>
+<p>When Completing this homework assignment I learned alot, I many caught up of lectures first before I jumped in and that helped me greatly. I feel like obtaining the correct knowledge made the homework assignment much easier than otherwise. It took some thought to write the quries but other than that it was simple but tedious, and I’d rather it be that way than difficult and tedious. Thanks for a great homework!</p>
 </section>
 </section>
 
